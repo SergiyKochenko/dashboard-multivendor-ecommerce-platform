@@ -1,3 +1,22 @@
+## Project Packages Installed
+
+The following packages are installed and used in this project:
+
+- **apexcharts**
+- **react-apexcharts**
+- **axios**
+- **jwt-decode**
+- **moment**
+- **react-hot-toast**
+- **react-icons**
+- **@reduxjs/toolkit**
+- **react-redux**
+- **react-spinners**
+- **react-window**
+- **redux-thunk**
+- **socket.io-client**
+
+These packages provide charting, state management, icons, notifications, date handling, HTTP requests, and real-time communication features for the dashboard.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
