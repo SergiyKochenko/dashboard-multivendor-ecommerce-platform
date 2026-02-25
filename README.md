@@ -68,3 +68,29 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Project Setup
+
+1. Clone the repository:
+	```bash
+	git clone <repo-url>
+	cd dashboard
+	```
+2. Install dependencies:
+	```bash
+	npm install
+	```
+3. Start the development server:
+	```bash
+	npm start
+	```
+
+## Recommended VS Code Extensions
+
+- **ES7+ React/Redux/React-Native snippets**
+- **Prettier - Code formatter**
+- **ESLint**
+- **Simple React Snippets**
+- **GitLens — Git supercharged**
+
+These extensions help with code formatting, linting, and productivity when working with React projects.
