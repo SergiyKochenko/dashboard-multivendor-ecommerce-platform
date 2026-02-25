@@ -1,3 +1,17 @@
+## Tailwind CSS Installation
+
+To add Tailwind CSS to this project (using Create React App):
+
+1. Install Tailwind CSS v3 as a dev dependency:
+	```bash
+	npm install -D tailwindcss@3
+	```
+2. Initialize Tailwind CSS configuration:
+	```bash
+	npx tailwindcss init
+	```
+
+For full setup instructions, see the [official Tailwind CSS guide for Create React App](https://v3.tailwindcss.com/docs/guides/create-react-app).
 ## Project Packages Installed
 
 The following packages are installed and used in this project:
