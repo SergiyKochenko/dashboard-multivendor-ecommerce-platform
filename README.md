@@ -9,18 +9,36 @@ An admin and seller dashboard for managing an ecommerce platform. Built with Rea
 
 ---
 
+
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Project Structure](#project-structure)
-3. [Getting Started](#getting-started)
-	 - [Prerequisites](#prerequisites)
-	 - [Installation](#installation)
-	 - [Running the App](#running-the-app)
-	 - [Building for Production](#building-for-production)
-	 - [Running Tests](#running-tests)
-4. [Features](#features)
-5. [Contributing](#contributing)
-6. [License](#license)
+3. [Backend Setup](#backend-setup)
+4. [Getting Started](#getting-started)
+	- [Prerequisites](#prerequisites)
+	- [Installation](#installation)
+	- [Running the App](#running-the-app)
+	- [Building for Production](#building-for-production)
+	- [Running Tests](#running-tests)
+5. [Features](#features)
+6. [Contributing](#contributing)
+7. [License](#license)
+---
+
+## Backend Setup
+
+This project requires a backend server for full functionality (authentication, data storage, etc.).
+
+**Recommended steps:**
+
+1. Clone or set up your backend repository (Node.js/Express, Django, etc.) in a separate folder.
+2. Configure environment variables (e.g., API URLs, database credentials) as needed for your backend.
+3. Start the backend server (commonly with `npm run start` or `npm run dev` for Node.js backends).
+4. Update API endpoints in the frontend (see `src/api/api.js`) to match your backend server's URL (e.g., `http://localhost:5000/api`).
+
+> **Note:** This frontend is decoupled from the backend. You can use any backend technology as long as the API contracts match.
+
+---
 
 ---
 
