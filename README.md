@@ -14,7 +14,8 @@ An admin and seller dashboard for managing an ecommerce platform. Built with Rea
 1. [Project Overview](#project-overview)
 2. [Project Structure](#project-structure)
 3. [Backend Setup](#backend-setup)
-4. [Getting Started](#getting-started)
+4. [Admin Login Page Setup](#admin-login-page-setup)
+5. [Getting Started](#getting-started)
 	- [Prerequisites](#prerequisites)
 	- [Installation](#installation)
 	- [Running the App](#running-the-app)
@@ -26,6 +27,24 @@ An admin and seller dashboard for managing an ecommerce platform. Built with Rea
 ---
 
 ## Backend Setup
+---
+
+## Admin Login Page Setup
+
+The Admin Login page allows administrators to securely access the dashboard. To set up and use the Admin Login page:
+
+1. Navigate to `/login` in your browser or use the login link in the app.
+2. Enter your admin credentials (these should be created in your backend or database).
+3. On successful login, you will be redirected to the admin dashboard.
+4. If authentication fails, an error message will be displayed.
+
+**File location:**
+- Frontend: `src/views/auth/Login.jsx`
+- Authentication logic: `src/store/Reducers/authReducer.js` and `src/api/api.js`
+
+> **Note:** Ensure your backend is running and the API endpoints for authentication are correctly configured in the frontend.
+
+---
 
 This project requires a backend server for full functionality (authentication, data storage, etc.).
 
