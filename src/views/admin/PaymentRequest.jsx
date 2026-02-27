@@ -32,6 +32,7 @@ const PaymentRequest = () => {
 
     return (
 <div className='px-2 lg:px-7 pt-5'>
+    <h1 className='text-[20px] font-bold mb-3'>Payment Request </h1>
     <div className='w-full p-4 bg-[#6a5fdf] rounded-md'>
         <h2 className='text-xl font-medium pb-5 text-[#d0d2d6]'>Withdrawal Request</h2>
         <div className='w-full'>

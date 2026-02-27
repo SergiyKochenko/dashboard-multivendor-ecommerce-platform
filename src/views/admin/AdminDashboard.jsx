@@ -72,6 +72,7 @@ const AdminDashboard = () => {
 
     return (
         <div className='px-2 md:px-7 py-5'>
+            <h1 className='text-[20px] font-bold mb-3'>Admin Dashboard </h1>
             <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7'>
                 
                 <div className='flex justify-between items-center p-5 bg-[#fae8e8] rounded-md gap-3'>
