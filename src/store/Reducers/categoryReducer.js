@@ -10,7 +10,7 @@ export const categoryAdd = createAsyncThunk(
             formData.append('name', name)
             formData.append('image', image)
             const {data} = await api.post('/category-add',formData,{withCredentials: true}) 
-            console.log(data)
+            // console.log(data)
             return fulfillWithValue(data)
         } catch (error) {
             // console.log(error.response.data)
@@ -19,6 +19,25 @@ export const categoryAdd = createAsyncThunk(
     }
 )
 
+// End Method 
+
+export const get_category = createAsyncThunk(
+    'category/get_category',
+    async({ parPage,page,searchValue },{rejectWithValue, fulfillWithValue}) => {
+        
+        try {
+             
+            const {data} = await api.get(`/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,{withCredentials: true}) 
+            // console.log(data)
+            return fulfillWithValue(data)
+        } catch (error) {
+            // console.log(error.response.data)
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+  // End Method
   
  
 export const categoryReducer = createSlice({
@@ -27,7 +46,8 @@ export const categoryReducer = createSlice({
         successMessage :  '',
         errorMessage : '',
         loader: false,
-        categorys : [] 
+        categorys : [], 
+        totalCategory: 0 
     },
     reducers : {
 
@@ -45,12 +65,18 @@ export const categoryReducer = createSlice({
             state.loader = false;
             state.errorMessage = payload.error
         })  
-        // .addCase(admin_login.fulfilled, (state, { payload }) => {
-        //     state.loader = false;
-        //     state.successMessage = payload.message
-        //     state.token = payload.token
-        //     state.role = returnRole(payload.token)
-        // })
+        .addCase(categoryAdd.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message
+            state.categorys = [...state.categorys, payload.category]
+             
+        })
+
+        .addCase(get_category.fulfilled, (state, { payload }) => {
+            state.totalCategory = payload.totalCategory;
+            state.categorys = payload.categorys;
+             
+        })
  
 
     }
