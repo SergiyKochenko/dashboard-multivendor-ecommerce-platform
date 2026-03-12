@@ -1,6 +1,7 @@
 # Ecommerce Dashboard
 
 An admin and seller dashboard for managing an ecommerce platform. Built with React, React Router, and Tailwind CSS.
+
 ## Project Structure
 
 # Ecommerce Dashboard
@@ -9,44 +10,46 @@ An admin and seller dashboard for managing an ecommerce platform. Built with Rea
 
 ---
 
-
 ## Table of Contents
+
 - [Ecommerce Dashboard](#ecommerce-dashboard)
-	- [Project Structure](#project-structure)
+  - [Project Structure](#project-structure)
 - [Ecommerce Dashboard](#ecommerce-dashboard-1)
-	- [Table of Contents](#table-of-contents)
-	- [Backend Setup](#backend-setup)
-	- [Admin Login Page Setup](#admin-login-page-setup)
-	- [Project Overview](#project-overview)
-	- [Project Structure](#project-structure-1)
-	- [Getting Started](#getting-started)
-		- [Prerequisites](#prerequisites)
-		- [Installation](#installation)
-		- [Running the App](#running-the-app)
-		- [Building for Production](#building-for-production)
-		- [Running Tests](#running-tests)
-	- [Features](#features)
-	- [Contributing](#contributing)
-	- [License](#license)
-	- [Project Packages Installed](#project-packages-installed)
+  - [Table of Contents](#table-of-contents)
+  - [Backend Setup](#backend-setup)
+  - [Admin Login Page Setup](#admin-login-page-setup)
+  - [Project Overview](#project-overview)
+  - [Project Structure](#project-structure-1)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Running the App](#running-the-app)
+    - [Building for Production](#building-for-production)
+    - [Running Tests](#running-tests)
+  - [Features](#features)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Project Packages Installed](#project-packages-installed)
 - [Getting Started with Create React App](#getting-started-with-create-react-app)
-	- [Available Scripts](#available-scripts)
-		- [`npm start`](#npm-start)
-		- [`npm test`](#npm-test)
-		- [`npm run build`](#npm-run-build)
-		- [`npm run eject`](#npm-run-eject)
-	- [Learn More](#learn-more)
-		- [Code Splitting](#code-splitting)
-		- [Analyzing the Bundle Size](#analyzing-the-bundle-size)
-		- [Making a Progressive Web App](#making-a-progressive-web-app)
-		- [Advanced Configuration](#advanced-configuration)
-		- [Deployment](#deployment)
-		- [`npm run build` fails to minify](#npm-run-build-fails-to-minify)
-	- [Project Setup](#project-setup)
-	- [Recommended VS Code Extensions](#recommended-vs-code-extensions)
+  - [Available Scripts](#available-scripts)
+    - [`npm start`](#npm-start)
+    - [`npm test`](#npm-test)
+    - [`npm run build`](#npm-run-build)
+    - [`npm run eject`](#npm-run-eject)
+  - [Learn More](#learn-more)
+    - [Code Splitting](#code-splitting)
+    - [Analyzing the Bundle Size](#analyzing-the-bundle-size)
+    - [Making a Progressive Web App](#making-a-progressive-web-app)
+    - [Advanced Configuration](#advanced-configuration)
+    - [Deployment](#deployment)
+    - [`npm run build` fails to minify](#npm-run-build-fails-to-minify)
+  - [Project Setup](#project-setup)
+  - [Recommended VS Code Extensions](#recommended-vs-code-extensions)
+
 ---
 
 ## Backend Setup
+
 ---
 
 ## Admin Login Page Setup
@@ -59,6 +62,7 @@ The Admin Login page allows administrators to securely access the dashboard. To 
 4. If authentication fails, an error message will be displayed.
 
 **File location:**
+
 - Frontend: `src/views/auth/Login.jsx`
 - Authentication logic: `src/store/Reducers/authReducer.js` and `src/api/api.js`
 
@@ -109,36 +113,46 @@ build/           # Production build output
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v16 or higher recommended)
 - npm
 
 ### Installation
+
 1. Clone the repository:
-	```bash
-	git clone <repo-url>
-	cd dashboard
-	```
+   ```bash
+   git clone <repo-url>
+   cd dashboard
+   ```
 2. Install dependencies:
-	```bash
-	npm install
-	```
+   ```bash
+   npm install
+   ```
 
 ### Running the App
+
 Start the development server:
+
 ```bash
 npm start
 ```
+
 The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ### Building for Production
+
 To create a production build:
+
 ```bash
 npm run build
 ```
+
 The output will be in the `build/` directory.
 
 ### Running Tests
+
 To run tests:
+
 ```bash
 npm test
 ```
@@ -146,6 +160,7 @@ npm test
 ---
 
 ## Features
+
 - User authentication (Login, Register)
 - Protected routes for admin and seller
 - Responsive layout with sidebar and header
@@ -156,17 +171,20 @@ npm test
 ---
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
 ## License
+
 MIT
-	```bash
+`bash
 	npx tailwindcss init
-	```
+	`
 
 For full setup instructions, see the [official Tailwind CSS guide for Create React App](https://v3.tailwindcss.com/docs/guides/create-react-app).
+
 ## Project Packages Installed
 
 The following packages are installed and used in this project:
@@ -186,6 +204,7 @@ The following packages are installed and used in this project:
 - **socket.io-client**
 
 These packages provide charting, state management, icons, notifications, date handling, HTTP requests, and real-time communication features for the dashboard.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -260,18 +279,18 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ## Project Setup
 
 1. Clone the repository:
-	```bash
-	git clone <repo-url>
-	cd dashboard
-	```
+   ```bash
+   git clone <repo-url>
+   cd dashboard
+   ```
 2. Install dependencies:
-	```bash
-	npm install
-	```
+   ```bash
+   npm install
+   ```
 3. Start the development server:
-	```bash
-	npm start
-	```
+   ```bash
+   npm start
+   ```
 
 ## Recommended VS Code Extensions
 
