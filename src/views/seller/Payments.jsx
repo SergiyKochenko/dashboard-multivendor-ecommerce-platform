@@ -15,7 +15,7 @@ const Payments = () => {
     return (
       <div style={style} className="flex text-sm text-white font-medium">
         <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
-        <div className="w-[25%] p-2 whitespace-nowrap">$3434</div>
+        <div className="w-[25%] p-2 whitespace-nowrap">€3434</div>
         <div className="w-[25%] p-2 whitespace-nowrap">
           <span className="py-[1px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
             Pending
