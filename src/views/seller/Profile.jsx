@@ -11,6 +11,7 @@ import {
 import toast from 'react-hot-toast';
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from '../../utils/utils';
+import { create_stripe_connect_account } from '../../store/Reducers/sellerReducer';
 
 const Profile = () => {
   const [state, setState] = useState({
@@ -22,8 +23,6 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const { userInfo, loader, successMessage } = useSelector((state) => state.auth);
-
-  const status = 'active';
 
   useEffect(() => {
     if (successMessage) {
@@ -117,12 +116,15 @@ const Profile = () => {
                 <div className="flex gap-2">
                   <span>Payment Account : </span>
                   <p>
-                    {status === 'active' ? (
+                    {userInfo.payment === 'active' ? (
                       <span className="bg-red-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded">
                         {userInfo.payment}
                       </span>
                     ) : (
-                      <span className="bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded">
+                      <span
+                        onClick={() => dispatch(create_stripe_connect_account())}
+                        className="bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded"
+                      >
                         Click Active
                       </span>
                     )}
@@ -185,6 +187,7 @@ const Profile = () => {
                       placeholder="Sub District Name"
                     />
                   </div>
+
                   <button
                     disabled={loader ? true : false}
                     className="bg-red-500 w-[200px] hover:shadow-red-300/50 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
