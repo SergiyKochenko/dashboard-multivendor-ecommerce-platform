@@ -33,6 +33,38 @@ export const send_withdrowal_request = createAsyncThunk(
 );
 // End Method
 
+export const get_payment_request = createAsyncThunk(
+  'payment/get_payment_request',
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/payment/request`, { withCredentials: true });
+      return fulfillWithValue(data);
+    } catch (error) {
+      // console.log(error.response.data)
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
+export const confirm_payment_request = createAsyncThunk(
+  'payment/confirm_payment_request',
+  async (paymentId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(
+        `/payment/request-confirm`,
+        { paymentId },
+        { withCredentials: true }
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      // console.log(error.response.data)
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
 export const PaymentReducer = createSlice({
   name: 'payment',
   initialState: {
@@ -61,7 +93,7 @@ export const PaymentReducer = createSlice({
         state.totalAmount = payload.totalAmount;
         state.availableAmount = payload.availableAmount;
         state.withdrowAmount = payload.withdrowAmount;
-        state.pendingAmount = payload.availableAmount;
+        state.pendingAmount = payload.pendingAmount;
       })
 
       .addCase(send_withdrowal_request.pending, (state, { payload }) => {
@@ -77,6 +109,24 @@ export const PaymentReducer = createSlice({
         state.pendingWithdrows = [...state.pendingWithdrows, payload.withdrowal];
         state.availableAmount = state.availableAmount - payload.withdrowal.amount;
         state.pendingAmount = payload.withdrowal.amount;
+      })
+
+      .addCase(get_payment_request.fulfilled, (state, { payload }) => {
+        state.pendingWithdrows = payload.withdrowalRequest;
+      })
+
+      .addCase(confirm_payment_request.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+      .addCase(confirm_payment_request.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.message;
+      })
+      .addCase(confirm_payment_request.fulfilled, (state, { payload }) => {
+        const temp = state.pendingWithdrows.filter((r) => r._id !== payload.payment._id);
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.pendingWithdrows = temp;
       });
   },
 });
