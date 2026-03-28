@@ -1,16 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { get_seller_order } from '../../store/Reducers/OrderReducer';
+import api from '../../api/api';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
   const { order, errorMessage, successMessage } = useSelector((state) => state.order);
+  const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(get_seller_order(orderId));
-  }, [orderId]);
+  }, [orderId, dispatch]);
+
+  useEffect(() => {
+    if (order && order.delivery_status) {
+      setStatus(order.delivery_status);
+    }
+  }, [order]);
+
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setStatus(newStatus);
+    setLoading(true);
+    try {
+      await api.put(
+        `/seller/order-status/update/${orderId}`,
+        { status: newStatus },
+        { withCredentials: true }
+      );
+      dispatch(get_seller_order(orderId));
+    } catch (err) {
+      // Optionally handle error
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -18,15 +44,17 @@ const OrderDetails = () => {
         <div className="flex justify-between items-center p-4">
           <h2 className="text-xl text-[#d0d2d6]">Order Details</h2>
           <select
-            name=""
-            id=""
+            value={status}
+            onChange={handleStatusChange}
             className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#475569] border border-slate-700 rounded-md text-[#d0d2d6]"
+            disabled={loading}
           >
-            <option value="">pending</option>
-            <option value="">processing</option>
-            <option value="">warehouse</option>
-            <option value="">placed</option>
-            <option value="">cancelled</option>
+            <option value="pending">pending</option>
+            <option value="processing">processing</option>
+            <option value="warehouse">warehouse</option>
+            <option value="placed">placed</option>
+            <option value="delivered">delivered</option>
+            <option value="cancelled">cancelled</option>
           </select>
         </div>
 

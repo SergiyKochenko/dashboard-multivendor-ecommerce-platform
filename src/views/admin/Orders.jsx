@@ -67,7 +67,19 @@ const Orders = () => {
                   <div className="py-3 w-[25%] font-medium whitespace-nowrap">#{o._id}</div>
                   <div className="py-3 w-[13%] font-medium">€{o.price}</div>
                   <div className="py-3 w-[18%] font-medium">{o.payment_status}</div>
-                  <div className="py-3 w-[18%] font-medium">{o.delivery_status}</div>
+                  <div className="py-3 w-[18%] font-medium">
+                    <span
+                      className={`px-3 py-1 rounded text-xs font-semibold
+                        ${o.delivery_status === 'processing' ? 'bg-yellow-200 text-yellow-800' : ''}
+                        ${o.delivery_status === 'shipped' ? 'bg-blue-200 text-blue-800' : ''}
+                        ${o.delivery_status === 'delivered' ? 'bg-green-200 text-green-800' : ''}
+                        ${o.delivery_status === 'cancelled' ? 'bg-red-200 text-red-800' : ''}
+                        ${o.delivery_status === 'returned' ? 'bg-gray-200 text-gray-800' : ''}
+                      `}
+                    >
+                      {o.delivery_status}
+                    </span>
+                  </div>
                   <div className="py-3 w-[18%] font-medium">
                     <Link to={`/admin/dashboard/order/details/${o._id}`}>View</Link>
                   </div>
@@ -88,7 +100,19 @@ const Orders = () => {
                       </div>
                       <div className="py-3 w-[13%] font-medium">€{so.price}</div>
                       <div className="py-3 w-[18%] font-medium">{so.payment_status}</div>
-                      <div className="py-3 w-[18%] font-medium">{so.delivery_status}</div>
+                      <div className="py-3 w-[18%] font-medium">
+                        <span
+                          className={`px-3 py-1 rounded text-xs font-semibold
+                            ${so.delivery_status === 'processing' ? 'bg-yellow-200 text-yellow-800' : ''}
+                            ${so.delivery_status === 'shipped' ? 'bg-blue-200 text-blue-800' : ''}
+                            ${so.delivery_status === 'delivered' ? 'bg-green-200 text-green-800' : ''}
+                            ${so.delivery_status === 'cancelled' ? 'bg-red-200 text-red-800' : ''}
+                            ${so.delivery_status === 'returned' ? 'bg-gray-200 text-gray-800' : ''}
+                          `}
+                        >
+                          {so.delivery_status}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>

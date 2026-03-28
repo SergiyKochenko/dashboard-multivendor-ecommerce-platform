@@ -71,7 +71,17 @@ const Orders = () => {
                     {d.payment_status}{' '}
                   </td>
                   <td scope="row" className="py-1 px-4 font-medium whitespace-nowrap">
-                    {d.delivery_status}
+                    <span
+                      className={`px-3 py-1 rounded text-xs font-semibold
+                        ${d.delivery_status === 'processing' ? 'bg-yellow-200 text-yellow-800' : ''}
+                        ${d.delivery_status === 'shipped' ? 'bg-blue-200 text-blue-800' : ''}
+                        ${d.delivery_status === 'delivered' ? 'bg-green-200 text-green-800' : ''}
+                        ${d.delivery_status === 'cancelled' ? 'bg-red-200 text-red-800' : ''}
+                        ${d.delivery_status === 'returned' ? 'bg-gray-200 text-gray-800' : ''}
+                      `}
+                    >
+                      {d.delivery_status}
+                    </span>
                   </td>
                   <td scope="row" className="py-1 px-4 font-medium whitespace-nowrap">
                     {d.date}
