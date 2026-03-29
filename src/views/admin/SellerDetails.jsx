@@ -48,7 +48,7 @@ const SellerDetails = () => {
                 <img
                   className="w-full h-[230px] object-cover"
                   src={seller.image}
-                  alt="Seller"
+                  alt={seller.name || 'Seller'}
                   onError={e => { e.target.onerror = null; e.target.src = '/images/default-avatar.png'; }}
                 />
               ) : (

@@ -90,7 +90,12 @@ const Sellers = () => {
                     {i + 1}
                   </td>
                   <td scope="row" className="py-1 px-4 font-medium whitespace-nowrap">
-                    <img className="w-[45px] h-[45px]" src={d.image} alt="" />
+                    <img
+                      className="w-[45px] h-[45px] object-cover"
+                      src={d.image}
+                      alt={d.name}
+                      onError={e => { e.target.onerror = null; e.target.src = '/images/default-avatar.png'; }}
+                    />
                   </td>
 
                   <td scope="row" className="py-1 px-4 font-medium whitespace-nowrap">
