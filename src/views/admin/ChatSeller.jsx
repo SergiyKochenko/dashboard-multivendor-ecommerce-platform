@@ -160,7 +160,7 @@ const ChatSeller = () => {
                             <div>
                               <img
                                 className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
-                                src="http://localhost:3001/images/demo.jpg"
+                                src="https://dashboard-multivendor-ecommerce-platform.onrender.com/images/demo.jpg"
                                 alt=""
                               />
                             </div>
@@ -180,7 +180,7 @@ const ChatSeller = () => {
                             <div>
                               <img
                                 className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
-                                src="http://localhost:3001/images/admin.jpg"
+                                src="https://dashboard-multivendor-ecommerce-platform.onrender.com/images/admin.jpg"
                                 alt=""
                               />
                             </div>

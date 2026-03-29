@@ -176,7 +176,7 @@ const AdminDashboard = () => {
                   <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] rounded-full z-10">
                     <img
                       className="w-full rounded-full h-full shadow-lg"
-                      src="http://localhost:3000/images/admin.jpg"
+                      src="https://dashboard-multivendor-ecommerce-platform.onrender.com/images/admin.jpg"
                       alt="admin"
                     />
                   </div>
