@@ -46,9 +46,10 @@ const SellerDetails = () => {
             <div>
               {seller?.image ? (
                 <img
-                  className="w-full h-[230px]"
-                  src="http://localhost:3000/images/demo.jpg"
-                  alt=""
+                  className="w-full h-[230px] object-cover"
+                  src={seller.image}
+                  alt="Seller"
+                  onError={e => { e.target.onerror = null; e.target.src = '/images/default-avatar.png'; }}
                 />
               ) : (
                 <span>Image Not Uploaded </span>
