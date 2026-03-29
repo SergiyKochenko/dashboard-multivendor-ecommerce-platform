@@ -66,7 +66,7 @@ export const bannerReducer = createSlice({
       })
       .addCase(add_banner.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(add_banner.fulfilled, (state, { payload }) => {
         state.loader = false;
@@ -83,7 +83,7 @@ export const bannerReducer = createSlice({
       })
       .addCase(update_banner.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(update_banner.fulfilled, (state, { payload }) => {
         state.loader = false;

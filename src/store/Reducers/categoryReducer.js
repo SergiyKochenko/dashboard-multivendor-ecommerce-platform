@@ -95,7 +95,7 @@ export const categoryReducer = createSlice({
       })
       .addCase(categoryAdd.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(categoryAdd.fulfilled, (state, { payload }) => {
         state.loader = false;
@@ -119,7 +119,7 @@ export const categoryReducer = createSlice({
 
       .addCase(updateCategory.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
 
       .addCase(deleteCategory.fulfilled, (state, action) => {

@@ -110,7 +110,7 @@ export const productReducer = createSlice({
       })
       .addCase(add_product.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(add_product.fulfilled, (state, { payload }) => {
         state.loader = false;
@@ -130,7 +130,7 @@ export const productReducer = createSlice({
       })
       .addCase(update_product.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(update_product.fulfilled, (state, { payload }) => {
         state.loader = false;

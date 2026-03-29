@@ -172,7 +172,7 @@ export const authReducer = createSlice({
       })
       .addCase(admin_login.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(admin_login.fulfilled, (state, { payload }) => {
         state.loader = false;
@@ -186,7 +186,7 @@ export const authReducer = createSlice({
       })
       .addCase(seller_login.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(seller_login.fulfilled, (state, { payload }) => {
         state.loader = false;
@@ -200,7 +200,7 @@ export const authReducer = createSlice({
       })
       .addCase(seller_register.rejected, (state, { payload }) => {
         state.loader = false;
-        state.errorMessage = payload.error;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
       .addCase(seller_register.fulfilled, (state, { payload }) => {
         state.loader = false;
