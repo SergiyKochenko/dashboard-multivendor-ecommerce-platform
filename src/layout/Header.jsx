@@ -37,7 +37,7 @@ const Header = ({ showSidebar, setShowSidebar }) => {
               {userInfo.role === 'admin' ? (
                 <img
                   className="w-[45px] h-[45px] rounded-full overflow-hidden"
-                  src="http://localhost:3001/images/admin.jpg"
+                  src="https://dashboard-multivendor-ecommerce-platform.onrender.com/images/admin.jpg"
                   alt=""
                 />
               ) : (
