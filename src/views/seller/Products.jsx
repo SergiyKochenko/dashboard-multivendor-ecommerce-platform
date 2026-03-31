@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Search from '../components/Search';
 import { Link } from 'react-router-dom';
 import Pagination from '../Pagination';
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { get_products } from '../../store/Reducers/productReducer';
+import { get_products, delete_product } from '../../store/Reducers/productReducer';
 import { LuImageMinus } from 'react-icons/lu';
+
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -23,6 +25,29 @@ const Products = () => {
     };
     dispatch(get_products(obj));
   }, [searchValue, currentPage, parPage]);
+
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const handleDeleteClick = (productId) => {
+    setDeleteId(productId);
+    setShowConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(delete_product(deleteId)).then((action) => {
+      if (action.type.endsWith('fulfilled')) {
+        toast.success('Product deleted successfully!');
+      }
+    });
+    setShowConfirm(false);
+    setDeleteId(null);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);
+    setDeleteId(null);
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -116,10 +141,38 @@ const Products = () => {
                         {' '}
                         <FaEye />{' '}
                       </Link>
-                      <Link className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
-                        {' '}
-                        <FaTrash />{' '}
-                      </Link>
+                      <button
+                        className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"
+                        onClick={() => handleDeleteClick(d._id)}
+                        title="Delete Product"
+                      >
+                        <FaTrash />
+                      </button>
+                 
+                          {/* Confirmation Modal */}
+                          {showConfirm && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto">
+                              <div className="bg-white rounded-lg shadow-2xl p-10 w-full max-w-xs text-center animate-fade-in border border-gray-200">
+                                <h2 className="text-xl font-bold mb-4 text-gray-900">Delete Product?</h2>
+                                
+                                <div className="flex justify-center gap-6 mt-2">
+                                  <button
+                                    className="px-6 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                    onClick={handleConfirmDelete}
+                                    autoFocus
+                                  >
+                                    Yes
+                                  </button>
+                                  <button
+                                    className="px-6 py-2 bg-gray-200 text-gray-800 font-semibold rounded hover:bg-gray-300 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onClick={handleCancelDelete}
+                                  >
+                                    No
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                     </div>
                   </td>
                 </tr>

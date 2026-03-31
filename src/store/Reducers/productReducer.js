@@ -1,6 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../api/api';
 
+export const delete_product = createAsyncThunk(
+  'product/delete_product',
+  async (productId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete(`/product-delete/${productId}`, { withCredentials: true });
+      return fulfillWithValue({ productId, message: data.message });
+    } catch (error) {
+      return rejectWithValue(error.response?.data || { error: 'Delete failed' });
+    }
+  }
+);
+
 export const add_product = createAsyncThunk(
   'product/add_product',
   async (product, { rejectWithValue, fulfillWithValue }) => {
@@ -141,6 +153,14 @@ export const productReducer = createSlice({
       .addCase(product_image_update.fulfilled, (state, { payload }) => {
         state.product = payload.product;
         state.successMessage = payload.message;
+      })
+
+      .addCase(delete_product.fulfilled, (state, { payload }) => {
+        state.products = state.products.filter((p) => p._id !== payload.productId);
+        state.successMessage = payload.message;
+      })
+      .addCase(delete_product.rejected, (state, { payload }) => {
+        state.errorMessage = payload?.error || payload?.message || 'Delete failed';
       });
   },
 });

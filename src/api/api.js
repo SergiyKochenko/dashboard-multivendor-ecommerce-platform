@@ -3,6 +3,7 @@ const local = "http://localhost:5000";
 const production = "https://backend-multivendor-ecommerce-platform.onrender.com";
 
 let api_url = "";
+// let mode = "dev"
 let mode = "pro"
 
 if (mode === "pro") {
