@@ -13,99 +13,98 @@ import moment from 'moment';
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-  const { totalSale, totalOrder, totalProduct, totalSeller, recentOrder, recentMessage } =
-    useSelector((state) => state.dashboard);
+  const {
+    totalSale,
+    totalOrder,
+    totalProduct,
+    totalSeller,
+    recentOrder,
+    recentMessage,
+    monthlyOrders,
+    monthlyRevenue,
+    monthlySellers,
+  } = useSelector((state) => state.dashboard);
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(get_admin_dashboard_data());
   }, []);
-  const state = {
-    series: [
-      {
-        name: 'Orders',
-        data: [25, 38, 47, 53, 80, 35, 27, 79, 90, 75, 40, 35],
-      },
-      {
-        name: 'Revenue',
-        data: [60, 40, 55, 60, 91, 55, 25, 70, 80, 77, 66, 77],
-      },
-      {
-        name: 'Sellers',
-        data: [35, 36, 55, 58, 85, 66, 33, 66, 99, 70, 40, 55],
-      },
-    ],
-    options: {
-      color: ['#181ee8', '#181ee8'],
-      plotOptions: {
-        radius: 30,
-      },
-      chart: {
-        background: 'transparent',
-        foreColor: '#d0d2d6',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      strock: {
-        show: true,
-        curve: ['smooth', 'straight', 'stepline'],
-        lineCap: 'butt',
-        colors: '#f0f0f0',
-        width: 0.5,
-        dashArray: 0,
-      },
-      xaxis: {
-        categories: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apl',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ],
-      },
-      legend: {
-        position: 'top',
-      },
-      responsive: [
-        {
-          breakpoint: 565,
-          yaxis: {
-            categories: [
-              'Jan',
-              'Feb',
-              'Mar',
-              'Apl',
-              'May',
-              'Jun',
-              'Jul',
-              'Aug',
-              'Sep',
-              'Oct',
-              'Nov',
-              'Dec',
-            ],
-          },
-          options: {
-            plotOptions: {
-              bar: {
-                horizontal: true,
-              },
-            },
-            chart: {
-              height: '550px',
-            },
-          },
-        },
+  const chartSeries = [
+    { name: 'Orders', data: monthlyOrders },
+    { name: 'Revenue', data: monthlyRevenue },
+    { name: 'Sellers', data: monthlySellers },
+  ];
+
+  const chartOptions = {
+    color: ['#181ee8', '#181ee8'],
+    plotOptions: {
+      radius: 30,
+    },
+    chart: {
+      background: 'transparent',
+      foreColor: '#d0d2d6',
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    strock: {
+      show: true,
+      curve: ['smooth', 'straight', 'stepline'],
+      lineCap: 'butt',
+      colors: '#f0f0f0',
+      width: 0.5,
+      dashArray: 0,
+    },
+    xaxis: {
+      categories: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apl',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
       ],
     },
+    legend: {
+      position: 'top',
+    },
+    responsive: [
+      {
+        breakpoint: 565,
+        yaxis: {
+          categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apl',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ],
+        },
+        options: {
+          plotOptions: {
+            bar: {
+              horizontal: true,
+            },
+          },
+          chart: {
+            height: '550px',
+          },
+        },
+      },
+    ],
   };
 
   return (
@@ -160,7 +159,7 @@ const AdminDashboard = () => {
       <div className="w-full flex flex-wrap mt-7">
         <div className="w-full lg:w-7/12 lg:pr-3">
           <div className="w-full bg-[#6a5fdf] p-4 rounded-md">
-            <Chart options={state.options} series={state.series} type="bar" height={350} />
+            <Chart options={chartOptions} series={chartSeries} type="bar" height={350} />
           </div>
         </div>
         <div className="w-full lg:w-5/12 lg:pl-4 mt-6 lg:mt-0">
