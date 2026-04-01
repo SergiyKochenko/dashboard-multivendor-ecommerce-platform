@@ -167,32 +167,47 @@ const AdminDashboard = () => {
           <div className="w-full bg-[#6a5fdf] p-4 rounded-md text-[#d0d2d6]">
             <div className="flex justify-between items-center">
               <h2 className="font-semibold text-lg text-[#d0d2d6] pb-3">Recent Seller Message</h2>
-              <Link className="font-semibold text-sm text-[#d0d2d6]">View All</Link>
+              <Link
+                to="/admin/dashboard/chat-sellers"
+                className="font-semibold text-sm text-[#d0d2d6] hover:underline"
+              >
+                View All
+              </Link>
             </div>
 
             <div className="flex flex-col gap-2 pt-6 text-[#d0d2d6]">
               <ol className="relative border-1 border-slate-600 ml-4">
-                <li className="mb-3 ml-6">
-                  <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] rounded-full z-10">
-                    <img
-                      className="w-full rounded-full h-full shadow-lg"
-                      src="https://dashboard-multivendor-ecommerce-platform.onrender.com/images/admin.jpg"
-                      alt="admin"
-                    />
-                  </div>
-                  <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
-                    <div className="flex justify-between items-center mb-2">
-                      <Link className="text-md font-normal">Admin</Link>
-                      <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
-                        {' '}
-                        2 day ago
-                      </time>
-                    </div>
-                    <div className="p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800">
-                      How Are you
-                    </div>
-                  </div>
-                </li>
+                {recentMessage.length === 0 ? (
+                  <li className="ml-2 text-sm text-slate-200">No recent messages.</li>
+                ) : (
+                  recentMessage.map((m, i) => (
+                    <li className="mb-3 ml-6" key={i}>
+                      <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] rounded-full z-10">
+                        <img
+                          className="w-full rounded-full h-full shadow-lg"
+                          src={m.image || seller}
+                          alt={m.senderName || 'seller'}
+                        />
+                      </div>
+                      <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
+                        <div className="flex justify-between items-center mb-2">
+                          <Link
+                            to={m.senderId ? `/admin/dashboard/chat-sellers/${m.senderId}` : '/admin/dashboard/chat-sellers'}
+                            className="text-md font-normal"
+                          >
+                            {m.senderName || 'Seller'}
+                          </Link>
+                          <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
+                            {m.createdAt ? moment(m.createdAt).fromNow() : ''}
+                          </time>
+                        </div>
+                        <div className="p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800">
+                          {m.message}
+                        </div>
+                      </div>
+                    </li>
+                  ))
+                )}
               </ol>
             </div>
           </div>
@@ -201,7 +216,12 @@ const AdminDashboard = () => {
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md mt-6">
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-lg text-[#d0d2d6] pb-3 ">Recent Orders</h2>
-          <Link className="font-semibold text-sm text-[#d0d2d6]">View All</Link>
+          <Link
+            to="/admin/dashboard/orders"
+            className="font-semibold text-sm text-[#d0d2d6] hover:underline"
+          >
+            View All
+          </Link>
         </div>
 
         <div className="relative overflow-x-auto">
