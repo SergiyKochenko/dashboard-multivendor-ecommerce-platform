@@ -33,20 +33,20 @@ const Payments = () => {
     availableAmount,
   } = useSelector((state) => state.payment);
 
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
 
   const sendRequest = (e) => {
     e.preventDefault();
     const numericAmount = Number(amount);
 
-    if (!numericAmount || numericAmount < 1) {
+    if (!amount || Number.isNaN(numericAmount) || numericAmount < 1) {
       toast.error('Minimum withdrawal amount is €1');
       return;
     }
 
     if (availableAmount - numericAmount > 10) {
       dispatch(send_withdrowal_request({ amount: numericAmount, sellerId: userInfo._id }));
-      setAmount(0);
+      setAmount('');
     } else {
       toast.error('Insufficient Balance');
     }
@@ -160,7 +160,7 @@ const Payments = () => {
             <form onSubmit={sendRequest}>
               <div className="flex gap-3 flex-wrap">
                 <input
-                  onChange={(e) => setAmount(Number(e.target.value))}
+                  onChange={(e) => setAmount(e.target.value)}
                   value={amount}
                   min="1"
                   step="1"

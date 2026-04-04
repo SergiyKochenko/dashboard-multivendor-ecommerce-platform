@@ -27,7 +27,7 @@ const PaymentRequest = () => {
 
   useEffect(() => {
     dispatch(get_payment_request());
-  }, []);
+  }, [dispatch]);
 
   const confirm_request = (id) => {
     setPaymentId(id);
@@ -43,23 +43,24 @@ const PaymentRequest = () => {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  }, [successMessage, errorMessage]);
+  }, [successMessage, errorMessage, dispatch]);
 
   const Row = ({ index, style }) => {
     return (
       <div style={style} className="flex text-sm text-white font-medium">
-        <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
-        <div className="w-[25%] p-2 whitespace-nowrap">€{pendingWithdrows[index]?.amount}</div>
-        <div className="w-[25%] p-2 whitespace-nowrap">
+        <div className="w-[16%] p-2 whitespace-nowrap">{index + 1}</div>
+        <div className="w-[20%] p-2 whitespace-nowrap">{pendingWithdrows[index]?.sellerName}</div>
+        <div className="w-[16%] p-2 whitespace-nowrap">€{pendingWithdrows[index]?.amount}</div>
+        <div className="w-[16%] p-2 whitespace-nowrap">
           <span className="py-[1px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
             {pendingWithdrows[index]?.status}
           </span>
         </div>
-        <div className="w-[25%] p-2 whitespace-nowrap">
+        <div className="w-[16%] p-2 whitespace-nowrap">
           {' '}
           {moment(pendingWithdrows[index]?.createdAt).format('LL')}{' '}
         </div>
-        <div className="w-[25%] p-2 whitespace-nowrap">
+        <div className="w-[16%] p-2 whitespace-nowrap">
           <button
             disabled={loader}
             onClick={() => confirm_request(pendingWithdrows[index]?._id)}
@@ -79,11 +80,12 @@ const PaymentRequest = () => {
         <div className="w-full">
           <div className="w-full overflow-x-auto">
             <div className="flex bg-[#a7a3de] uppercase text-xs font-bold min-w-[340px] rounded-md">
-              <div className="w-[25%] p-2"> No </div>
-              <div className="w-[25%] p-2"> Amount </div>
-              <div className="w-[25%] p-2"> Status </div>
-              <div className="w-[25%] p-2"> Date </div>
-              <div className="w-[25%] p-2"> Action </div>
+                <div className="w-[16%] p-2"> No </div>
+                <div className="w-[20%] p-2"> Seller </div>
+                <div className="w-[16%] p-2"> Amount </div>
+                <div className="w-[16%] p-2"> Status </div>
+                <div className="w-[16%] p-2"> Date </div>
+                <div className="w-[16%] p-2"> Action </div>
             </div>
             {
               <List
