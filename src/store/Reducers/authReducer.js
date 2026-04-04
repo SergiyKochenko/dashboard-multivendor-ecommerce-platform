@@ -209,6 +209,24 @@ export const authReducer = createSlice({
         state.role = returnRole(payload.token);
       })
 
+      .addCase(logout.pending, (state) => {
+        state.loader = true;
+        state.errorMessage = '';
+        state.successMessage = '';
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loader = false;
+        state.token = '';
+        state.role = '';
+        state.userInfo = '';
+        state.errorMessage = '';
+        state.successMessage = '';
+      })
+      .addCase(logout.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload?.error || payload?.message || 'Logout failed';
+      })
+
       .addCase(get_user_info.fulfilled, (state, { payload }) => {
         state.loader = false;
         state.userInfo = payload.userInfo;
