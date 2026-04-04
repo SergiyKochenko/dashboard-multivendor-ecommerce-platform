@@ -44,6 +44,40 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/index.js",
+      "<rootDir>/src/reportWebVitals.js",
+      "<rootDir>/src/layout/",
+      "<rootDir>/src/store/",
+      "<rootDir>/src/views/",
+      "<rootDir>/src/navigation/allNav.js",
+      "<rootDir>/src/router/routes/adminRoutes.js",
+      "<rootDir>/src/router/routes/publicRoutes.js",
+      "<rootDir>/src/router/routes/sellerRoutes.js",
+      "<rootDir>/src/router/routes/ProtectRoute.jsx"
+    ],
+    "collectCoverageFrom": [
+      "src/App.jsx",
+      "src/api/api.js",
+      "src/navigation/index.js",
+      "src/router/Router.jsx",
+      "src/router/routes/index.js",
+      "src/router/routes/privateRoutes.js",
+      "src/router/routes/ProtectRoute.js",
+      "!src/**/*.test.js",
+      "!src/**/*.test.jsx"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
+      }
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
