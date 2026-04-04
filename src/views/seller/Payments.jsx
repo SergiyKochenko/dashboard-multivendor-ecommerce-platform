@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useState } from 'react';
-import { MdCurrencyExchange, MdProductionQuantityLimits } from 'react-icons/md';
+import { MdCurrencyExchange } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { FixedSizeList as List } from 'react-window';
 import {
@@ -37,8 +37,15 @@ const Payments = () => {
 
   const sendRequest = (e) => {
     e.preventDefault();
-    if (availableAmount - amount > 10) {
-      dispatch(send_withdrowal_request({ amount, sellerId: userInfo._id }));
+    const numericAmount = Number(amount);
+
+    if (!numericAmount || numericAmount < 1) {
+      toast.error('Minimum withdrawal amount is €1');
+      return;
+    }
+
+    if (availableAmount - numericAmount > 10) {
+      dispatch(send_withdrowal_request({ amount: numericAmount, sellerId: userInfo._id }));
       setAmount(0);
     } else {
       toast.error('Insufficient Balance');
@@ -82,8 +89,10 @@ const Payments = () => {
   };
 
   useEffect(() => {
-    dispatch(get_seller_payment_details(userInfo._id));
-  }, []);
+    if (userInfo?._id) {
+      dispatch(get_seller_payment_details(userInfo._id));
+    }
+  }, [dispatch, userInfo?._id]);
 
   useEffect(() => {
     if (successMessage) {
@@ -94,7 +103,7 @@ const Payments = () => {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  }, [successMessage, errorMessage]);
+  }, [successMessage, errorMessage, dispatch]);
 
   return (
     <div className="px-2 md:px-7 py-5">
@@ -151,9 +160,10 @@ const Payments = () => {
             <form onSubmit={sendRequest}>
               <div className="flex gap-3 flex-wrap">
                 <input
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(Number(e.target.value))}
                   value={amount}
-                  min="0"
+                  min="1"
+                  step="1"
                   type="number"
                   className="px-3 py-2 md:w-[75%] focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                   name="amount"
