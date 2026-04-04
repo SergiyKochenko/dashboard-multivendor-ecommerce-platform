@@ -95,6 +95,19 @@ export const profile_info_add = createAsyncThunk(
 );
 // end method
 
+export const profile_user_info_update = createAsyncThunk(
+  'auth/profile_user_info_update',
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post('/profile-user-info-update', info, { withCredentials: true });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// end method
+
 const returnRole = (token) => {
   if (token) {
     const decodeToken = jwtDecode(token);
@@ -248,6 +261,19 @@ export const authReducer = createSlice({
         state.loader = false;
         state.userInfo = payload.userInfo;
         state.successMessage = payload.message;
+      })
+
+      .addCase(profile_user_info_update.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(profile_user_info_update.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.userInfo = payload.userInfo;
+        state.successMessage = payload.message;
+      })
+      .addCase(profile_user_info_update.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload?.error || payload?.message || 'An error occurred';
       })
 
       // change Password

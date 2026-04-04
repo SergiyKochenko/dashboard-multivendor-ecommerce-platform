@@ -8,6 +8,7 @@ import {
   messageClear,
   profile_info_add,
   change_password,
+  profile_user_info_update,
 } from '../../store/Reducers/authReducer';
 import toast from 'react-hot-toast';
 import { PropagateLoader } from 'react-spinners';
@@ -15,6 +16,13 @@ import { overrideStyle } from '../../utils/utils';
 import { create_stripe_connect_account } from '../../store/Reducers/sellerReducer';
 
 const Profile = () => {
+  const [isUserEdit, setIsUserEdit] = useState(false);
+  const [isShopEdit, setIsShopEdit] = useState(false);
+  const [userState, setUserState] = useState({
+    name: '',
+    email: '',
+  });
+
   const [state, setState] = useState({
     division: '',
     district: '',
@@ -26,11 +34,18 @@ const Profile = () => {
   const { userInfo, loader, successMessage, errorMessage } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (successMessage) {
-      toast.success(successMessage);
-      messageClear();
-    }
-  }, [successMessage]);
+    setUserState({
+      name: userInfo?.name || '',
+      email: userInfo?.email || '',
+    });
+
+    setState({
+      shopName: userInfo?.shopInfo?.shopName || '',
+      division: userInfo?.shopInfo?.division || '',
+      district: userInfo?.shopInfo?.district || '',
+      sub_district: userInfo?.shopInfo?.sub_district || '',
+    });
+  }, [userInfo]);
 
   const add_image = (e) => {
     if (e.target.files.length > 0) {
@@ -50,6 +65,20 @@ const Profile = () => {
   const add = (e) => {
     e.preventDefault();
     dispatch(profile_info_add(state));
+    setIsShopEdit(false);
+  };
+
+  const userInputHandle = (e) => {
+    setUserState({
+      ...userState,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const updateUserInfo = (e) => {
+    e.preventDefault();
+    dispatch(profile_user_info_update(userState));
+    setIsUserEdit(false);
   };
 
   // Change Password
@@ -81,6 +110,8 @@ const Profile = () => {
       dispatch(messageClear());
     }
   }, [successMessage, errorMessage, dispatch]);
+
+  const hasShopInfo = !!userInfo?.shopInfo && Object.keys(userInfo.shopInfo).length > 0;
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -125,17 +156,79 @@ const Profile = () => {
 
             <div className="px-0 md:px-5 py-2">
               <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative">
-                <span className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer">
+                <span
+                  onClick={() => setIsUserEdit((prev) => !prev)}
+                  className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer"
+                >
                   <FaRegEdit />{' '}
                 </span>
-                <div className="flex gap-2">
-                  <span>Name : </span>
-                  <span>{userInfo.name}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span>Email : </span>
-                  <span>{userInfo.email}</span>
-                </div>
+
+                {isUserEdit ? (
+                  <form onSubmit={updateUserInfo} className="flex flex-col gap-2">
+                    <div className="flex flex-col w-full gap-1">
+                      <label htmlFor="user_name">Name</label>
+                      <input
+                        id="user_name"
+                        type="text"
+                        name="name"
+                        value={userState.name}
+                        onChange={userInputHandle}
+                        className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
+                        placeholder="Your Name"
+                        required
+                      />
+                    </div>
+
+                    <div className="flex flex-col w-full gap-1">
+                      <label htmlFor="user_email">Email</label>
+                      <input
+                        id="user_email"
+                        type="email"
+                        name="email"
+                        value={userState.email}
+                        onChange={userInputHandle}
+                        className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
+                        placeholder="Your Email"
+                        required
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        type="submit"
+                        disabled={loader}
+                        className="bg-red-500 hover:shadow-red-300/50 hover:shadow-lg text-white rounded-md px-4 py-2"
+                      >
+                        {loader ? 'Saving...' : 'Save'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUserState({
+                            name: userInfo?.name || '',
+                            email: userInfo?.email || '',
+                          });
+                          setIsUserEdit(false);
+                        }}
+                        className="bg-slate-600 text-white rounded-md px-4 py-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <div className="flex gap-2">
+                      <span>Name : </span>
+                      <span>{userInfo.name}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span>Email : </span>
+                      <span>{userInfo.email}</span>
+                    </div>
+                  </>
+                )}
+
                 <div className="flex gap-2">
                   <span>Role : </span>
                   <span>{userInfo.role}</span>
@@ -165,7 +258,7 @@ const Profile = () => {
             </div>
 
             <div className="px-0 md:px-5 py-2">
-              {!userInfo?.shopInfo ? (
+              {!hasShopInfo || isShopEdit ? (
                 <form onSubmit={add}>
                   <div className="flex flex-col w-full gap-1 mb-2">
                     <label htmlFor="Shop">Shop Name</label>
@@ -229,10 +322,30 @@ const Profile = () => {
                       'Save Changes'
                     )}
                   </button>
+                  {hasShopInfo && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setState({
+                          shopName: userInfo?.shopInfo?.shopName || '',
+                          division: userInfo?.shopInfo?.division || '',
+                          district: userInfo?.shopInfo?.district || '',
+                          sub_district: userInfo?.shopInfo?.sub_district || '',
+                        });
+                        setIsShopEdit(false);
+                      }}
+                      className="ml-2 bg-slate-600 w-[200px] hover:shadow-slate-300/30 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
+                    >
+                      Cancel
+                    </button>
+                  )}
                 </form>
               ) : (
                 <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative">
-                  <span className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer">
+                  <span
+                    onClick={() => setIsShopEdit(true)}
+                    className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer"
+                  >
                     <FaRegEdit />{' '}
                   </span>
                   <div className="flex gap-2">
