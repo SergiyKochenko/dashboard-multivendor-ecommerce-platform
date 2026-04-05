@@ -31,7 +31,7 @@ const ProtectRoute = ({ route, children }) => {
             }
           }
         } else {
-          return <Navigate to="/unauthorized" replace />;
+          return <Navigate to="/403" replace />;
         }
       }
     } else {

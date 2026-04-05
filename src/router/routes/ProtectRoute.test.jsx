@@ -35,7 +35,7 @@ describe('ProtectRoute', () => {
       route: { role: 'admin' },
     });
 
-    expect(screen.getByTestId('navigate')).toHaveAttribute('data-to', '/unauthorized');
+    expect(screen.getByTestId('navigate')).toHaveAttribute('data-to', '/403');
   });
 
   it('renders children for matching role and matching status', () => {
