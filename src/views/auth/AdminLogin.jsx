@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { admin_login, messageClear } from '../../store/Reducers/authReducer';
+import { admin_login, get_user_info, messageClear } from '../../store/Reducers/authReducer';
 import { PropagateLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const AdminLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
+  const { loader, errorMessage, successMessage, role } = useSelector((state) => state.auth);
 
   const [state, setState] = useState({
     email: '',
@@ -22,10 +22,15 @@ const AdminLogin = () => {
     });
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    dispatch(admin_login(state));
-    // console.log(state)
+    try {
+      await dispatch(admin_login(state)).unwrap();
+      await dispatch(get_user_info()).unwrap();
+      navigate('/admin/dashboard', { replace: true });
+    } catch (error) {
+      // Errors are handled by reducer state + toast effect.
+    }
   };
 
   const overrideStyle = {
@@ -44,9 +49,15 @@ const AdminLogin = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      navigate('/');
     }
   }, [errorMessage, successMessage, dispatch, navigate]);
+
+  useEffect(() => {
+    if (role) {
+      // Logged-in users should not stay on the admin login page.
+      navigate('/', { replace: true });
+    }
+  }, [role, navigate]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center">

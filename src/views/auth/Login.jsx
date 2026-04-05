@@ -6,13 +6,13 @@ import { PropagateLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { overrideStyle } from '../../utils/utils';
-import { seller_login, messageClear } from '../../store/Reducers/authReducer';
+import { seller_login, get_user_info, messageClear } from '../../store/Reducers/authReducer';
 
 const Login = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
+  const { loader, errorMessage, successMessage, role } = useSelector((state) => state.auth);
 
   const [state, setState] = useState({
     email: '',
@@ -26,22 +26,34 @@ const Login = () => {
     });
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    dispatch(seller_login(state));
+    try {
+      await dispatch(seller_login(state)).unwrap();
+      await dispatch(get_user_info()).unwrap();
+      navigate('/seller/dashboard', { replace: true });
+    } catch (error) {
+      // Errors are handled by reducer state + toast effect.
+    }
   };
 
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      navigate('/');
     }
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  }, [successMessage, errorMessage]);
+  }, [successMessage, errorMessage, dispatch]);
+
+  useEffect(() => {
+    if (role) {
+      // Logged-in users should not stay on the seller login page.
+      navigate('/', { replace: true });
+    }
+  }, [role, navigate]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center">

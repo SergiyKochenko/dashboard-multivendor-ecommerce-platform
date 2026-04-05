@@ -192,6 +192,7 @@ export const authReducer = createSlice({
         state.successMessage = payload.message;
         state.token = payload.token;
         state.role = returnRole(payload.token);
+        state.userInfo = '';
       })
 
       .addCase(seller_login.pending, (state, { payload }) => {
@@ -206,6 +207,7 @@ export const authReducer = createSlice({
         state.successMessage = payload.message;
         state.token = payload.token;
         state.role = returnRole(payload.token);
+        state.userInfo = '';
       })
 
       .addCase(seller_register.pending, (state, { payload }) => {
@@ -220,6 +222,7 @@ export const authReducer = createSlice({
         state.successMessage = payload.message;
         state.token = payload.token;
         state.role = returnRole(payload.token);
+        state.userInfo = '';
       })
 
       .addCase(logout.pending, (state) => {
