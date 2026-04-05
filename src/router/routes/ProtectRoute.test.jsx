@@ -106,4 +106,34 @@ describe('ProtectRoute', () => {
 
     expect(screen.getByText('Allowed content')).toBeInTheDocument();
   });
+
+  it('renders children when role matches and no status/visibility guards exist', () => {
+    renderWithAuth({
+      role: 'seller',
+      userInfo: { role: 'seller', status: 'active' },
+      route: { role: 'seller' },
+    });
+
+    expect(screen.getByText('Allowed content')).toBeInTheDocument();
+  });
+
+  it('renders nothing when route expects role but user info is missing', () => {
+    const { container } = renderWithAuth({
+      role: 'seller',
+      userInfo: null,
+      route: { role: 'seller' },
+    });
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders nothing for non-seller ability route', () => {
+    const { container } = renderWithAuth({
+      role: 'seller',
+      userInfo: { role: 'seller', status: 'active' },
+      route: { ability: 'admin' },
+    });
+
+    expect(container).toBeEmptyDOMElement();
+  });
 });
