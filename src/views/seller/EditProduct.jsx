@@ -184,9 +184,9 @@ const EditProduct = () => {
                 />
 
                 <div
-                  className={`absolute top-[101%] bg-[#475569] w-full transition-all ${cateShow ? 'scale-100' : 'scale-0'} `}
+                  className={`absolute top-[101%] z-20 bg-slate-800 w-full transition-all ${cateShow ? 'scale-100' : 'scale-0'} `}
                 >
-                  <div className="w-full px-4 py-2 fixed">
+                  <div className="w-full px-4 py-2 bg-slate-800">
                     <input
                       value={searchValue}
                       onChange={categorySearch}
@@ -195,12 +195,12 @@ const EditProduct = () => {
                       placeholder="search"
                     />
                   </div>
-                  <div className="pt-14"></div>
-                  <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scrool">
+                  <div className="flex justify-start items-start flex-col h-[200px] overflow-y-auto overflow-x-hidden bg-slate-800">
                     {allCategory.length > 0 &&
                       allCategory.map((c, i) => (
                         <span
-                          className={`px-4 py-2 hover:bg-indigo-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500'}`}
+                          key={i}
+                          className={`block px-4 py-2 bg-slate-800 hover:bg-indigo-500 hover:text-white hover:shadow-lg w-full cursor-pointer ${category === c.name && 'bg-indigo-500'}`}
                           onClick={() => {
                             setCateShow(false);
                             setCategory(c.name);
