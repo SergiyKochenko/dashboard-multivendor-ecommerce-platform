@@ -13,6 +13,7 @@ const AddProduct = () => {
   const dispatch = useDispatch();
   const { categorys } = useSelector((state) => state.category);
   const { loader, successMessage, errorMessage } = useSelector((state) => state.product);
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(
@@ -120,6 +121,12 @@ const AddProduct = () => {
 
   const add = (e) => {
     e.preventDefault();
+    const shopName = userInfo?.shopInfo?.shopName?.trim();
+    if (!shopName) {
+      toast.error('Please complete your profile shop name before adding products');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', state.name);
     formData.append('description', state.description);
@@ -127,7 +134,7 @@ const AddProduct = () => {
     formData.append('stock', state.stock);
     formData.append('discount', state.discount);
     formData.append('brand', state.brand);
-    formData.append('shopName', 'HappyShopping');
+    formData.append('shopName', shopName);
     formData.append('category', category);
 
     for (let i = 0; i < images.length; i++) {
