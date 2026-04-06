@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from '../Pagination';
-import { FaE } from 'react-icons/fa6';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { FaImage } from 'react-icons/fa';
 import { IoMdCloseCircle } from 'react-icons/io';
@@ -32,6 +31,8 @@ const Category = () => {
   const [imageShow, setImage] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
 
   const [state, setState] = useState({
     name: '',
@@ -99,11 +100,22 @@ const Category = () => {
     setShow(true);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure to delete category?')) {
-      console.log('delete category id', id);
-      dispatch(deleteCategory(id));
+  const handleDelete = (category) => {
+    setCategoryToDelete(category);
+    setShowDeletePopup(true);
+  };
+
+  const confirmDelete = () => {
+    if (categoryToDelete?._id) {
+      dispatch(deleteCategory(categoryToDelete._id));
     }
+    setShowDeletePopup(false);
+    setCategoryToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setShowDeletePopup(false);
+    setCategoryToDelete(null);
   };
 
   return (
@@ -171,7 +183,7 @@ const Category = () => {
 
                           <Link
                             className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"
-                            onClick={() => handleDelete(d._id)}
+                            onClick={() => handleDelete(d)}
                           >
                             {' '}
                             <FaTrash />{' '}
@@ -269,6 +281,34 @@ const Category = () => {
           </div>
         </div>
       </div>
+
+      {showDeletePopup && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-[#00000080] px-4">
+          <div className="w-full max-w-md rounded-md bg-white p-6 shadow-xl">
+            <h2 className="text-xl font-semibold text-[#1f2937]">Delete Category</h2>
+            <p className="mt-3 text-sm text-[#374151]">
+              Are you sure you want to delete category "{categoryToDelete?.name}"?
+            </p>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={cancelDelete}
+                className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              >
+                No
+              </button>
+              <button
+                type="button"
+                onClick={confirmDelete}
+                className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
