@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { get_seller_order } from '../../store/Reducers/OrderReducer';
 import api from '../../api/api';
+import toast from 'react-hot-toast';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const { order, errorMessage, successMessage } = useSelector((state) => state.order);
+  const { order } = useSelector((state) => state.order);
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -23,19 +24,25 @@ const OrderDetails = () => {
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
+    const previousStatus = status;
     setStatus(newStatus);
     setLoading(true);
+
     try {
-      await api.put(
+      const { data } = await api.put(
         `/seller/order-status/update/${orderId}`,
         { status: newStatus },
         { withCredentials: true }
       );
-      dispatch(get_seller_order(orderId));
+
+      toast.success(data?.message || 'Order status updated successfully');
+      await dispatch(get_seller_order(orderId));
     } catch (err) {
-      // Optionally handle error
+      toast.error(err?.response?.data?.message || 'Failed to update order status');
+      setStatus(order?.delivery_status || previousStatus);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
