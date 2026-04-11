@@ -17,14 +17,18 @@ const Orders = () => {
   const [parPage, setParPage] = useState(5);
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [parPage, searchValue]);
+
+  useEffect(() => {
     const obj = {
-      parPage: parseInt(parPage),
-      page: parseInt(currentPage),
+      parPage: parseInt(parPage, 10),
+      page: parseInt(currentPage, 10),
       searchValue,
       sellerId: userInfo._id,
     };
     dispatch(get_seller_orders(obj));
-  }, [searchValue, currentPage, parPage]);
+  }, [dispatch, searchValue, currentPage, parPage, userInfo._id]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
