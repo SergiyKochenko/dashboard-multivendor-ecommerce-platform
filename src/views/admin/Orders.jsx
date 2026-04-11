@@ -70,6 +70,7 @@ const Orders = () => {
                   <div className="py-3 w-[18%] font-medium">
                     <span
                       className={`px-3 py-1 rounded text-xs font-semibold
+                        ${o.delivery_status === 'pending' ? 'bg-gray-200 text-gray-800' : ''}
                         ${o.delivery_status === 'processing' ? 'bg-yellow-200 text-yellow-800' : ''}
                         ${o.delivery_status === 'shipped' ? 'bg-blue-200 text-blue-800' : ''}
                         ${o.delivery_status === 'delivered' ? 'bg-green-200 text-green-800' : ''}
@@ -103,7 +104,10 @@ const Orders = () => {
                       <div className="py-3 w-[18%] font-medium">
                         <span
                           className={`px-3 py-1 rounded text-xs font-semibold
+                            ${so.delivery_status === 'pending' ? 'bg-gray-200 text-gray-800' : ''}
                             ${so.delivery_status === 'processing' ? 'bg-yellow-200 text-yellow-800' : ''}
+                            ${so.delivery_status === 'warehouse' ? 'bg-purple-200 text-purple-800' : ''}
+                            ${so.delivery_status === 'placed' ? 'bg-orange-200 text-orange-800' : ''}
                             ${so.delivery_status === 'shipped' ? 'bg-blue-200 text-blue-800' : ''}
                             ${so.delivery_status === 'delivered' ? 'bg-green-200 text-green-800' : ''}
                             ${so.delivery_status === 'cancelled' ? 'bg-red-200 text-red-800' : ''}

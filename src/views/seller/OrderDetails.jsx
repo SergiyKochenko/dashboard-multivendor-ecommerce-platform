@@ -60,8 +60,10 @@ const OrderDetails = () => {
             <option value="processing">processing</option>
             <option value="warehouse">warehouse</option>
             <option value="placed">placed</option>
+            <option value="shipped">shipped</option>
             <option value="delivered">delivered</option>
             <option value="cancelled">cancelled</option>
+            <option value="returned">returned</option>
           </select>
         </div>
 

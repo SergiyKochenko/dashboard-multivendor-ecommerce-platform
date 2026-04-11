@@ -73,7 +73,10 @@ const Orders = () => {
                   <td scope="row" className="py-1 px-4 font-medium whitespace-nowrap">
                     <span
                       className={`px-3 py-1 rounded text-xs font-semibold
+                        ${d.delivery_status === 'pending' ? 'bg-gray-200 text-gray-800' : ''}
                         ${d.delivery_status === 'processing' ? 'bg-yellow-200 text-yellow-800' : ''}
+                        ${d.delivery_status === 'warehouse' ? 'bg-purple-200 text-purple-800' : ''}
+                        ${d.delivery_status === 'placed' ? 'bg-orange-200 text-orange-800' : ''}
                         ${d.delivery_status === 'shipped' ? 'bg-blue-200 text-blue-800' : ''}
                         ${d.delivery_status === 'delivered' ? 'bg-green-200 text-green-800' : ''}
                         ${d.delivery_status === 'cancelled' ? 'bg-red-200 text-red-800' : ''}
