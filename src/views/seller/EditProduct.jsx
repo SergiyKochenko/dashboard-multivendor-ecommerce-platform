@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { IoMdImages } from 'react-icons/io';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_category } from '../../store/Reducers/categoryReducer';
@@ -69,6 +68,8 @@ const EditProduct = () => {
   };
 
   const [imageShow, setImageShow] = useState([]);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [removeTargetImage, setRemoveTargetImage] = useState('');
 
   const changeImage = (img, files) => {
     if (files.length > 0) {
@@ -82,6 +83,39 @@ const EditProduct = () => {
     }
   };
 
+  const removeImage = (img) => {
+    if ((imageShow || []).length <= 1) {
+      toast.error('At least one product image is required');
+      return;
+    }
+
+    setRemoveTargetImage(img);
+    setShowRemoveModal(true);
+  };
+
+  const confirmRemoveImage = () => {
+    if (!removeTargetImage) {
+      setShowRemoveModal(false);
+      return;
+    }
+
+    dispatch(
+      product_image_update({
+        oldImage: removeTargetImage,
+        productId,
+        removeImage: true,
+      })
+    );
+
+    setShowRemoveModal(false);
+    setRemoveTargetImage('');
+  };
+
+  const cancelRemoveImage = () => {
+    setShowRemoveModal(false);
+    setRemoveTargetImage('');
+  };
+
   useEffect(() => {
     setState({
       name: product.name,
@@ -92,7 +126,7 @@ const EditProduct = () => {
       stock: product.stock,
     });
     setCategory(product.category);
-    setImageShow(product.images);
+    setImageShow(product.images || []);
   }, [product]);
 
   useEffect(() => {
@@ -277,16 +311,24 @@ const EditProduct = () => {
               {imageShow &&
                 imageShow.length > 0 &&
                 imageShow.map((img, i) => (
-                  <div>
-                    <label htmlFor={i}>
-                      <img src={img} alt="" />
+                  <div key={`${img}-${i}`} className="h-[180px] relative">
+                    <label htmlFor={`image-${i}`}>
+                      <img className="w-full h-full rounded-sm" src={img} alt="" />
                     </label>
                     <input
                       onChange={(e) => changeImage(img, e.target.files)}
                       type="file"
-                      id={i}
+                      id={`image-${i}`}
                       className="hidden"
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(img)}
+                      className="p-2 z-10 cursor-pointer bg-slate-700 hover:shadow-lg hover:shadow-slate-400/50 text-white absolute top-1 right-1 rounded-full"
+                      aria-label="Remove product image"
+                    >
+                      <IoMdCloseCircle />
+                    </button>
                   </div>
                 ))}
             </div>
@@ -303,6 +345,38 @@ const EditProduct = () => {
                 )}
               </button>
             </div>
+
+            {showRemoveModal && (
+              <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Remove product image confirmation"
+                  className="w-full max-w-md bg-[#6a5fdf] border border-slate-700 rounded-md p-5"
+                >
+                  <h2 className="text-[#d0d2d6] text-lg font-semibold mb-2">Remove Product Image?</h2>
+                  <p className="text-[#d0d2d6] text-sm mb-5">
+                    This action will remove the selected image from this product.
+                  </p>
+                  <div className="flex justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={cancelRemoveImage}
+                      className="px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={confirmRemoveImage}
+                      className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </form>
         </div>
       </div>
