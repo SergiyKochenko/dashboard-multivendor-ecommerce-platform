@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { IoMdImages } from 'react-icons/io';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_category } from '../../store/Reducers/categoryReducer';
@@ -70,26 +71,61 @@ const EditProduct = () => {
   const [imageShow, setImageShow] = useState([]);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [removeTargetImage, setRemoveTargetImage] = useState('');
+  const [removeTargetIndex, setRemoveTargetIndex] = useState(-1);
+  const imageInputRefs = useRef([]);
 
-  const changeImage = (img, files) => {
+  const changeImage = async (img, index, files) => {
     if (files.length > 0) {
-      dispatch(
-        product_image_update({
-          oldImage: img,
-          newImage: files[0],
-          productId,
-        })
-      );
+      const selectedImage = files[0];
+      const previewImage = URL.createObjectURL(selectedImage);
+
+      setImageShow((prev) => prev.map((item, itemIndex) => (itemIndex === index ? previewImage : item)));
+
+      try {
+        await dispatch(
+          product_image_update({
+            oldImage: img,
+            imageIndex: index,
+            newImage: selectedImage,
+            productId,
+          })
+        ).unwrap();
+      } catch (error) {
+        setImageShow((prev) => prev.map((item, itemIndex) => (itemIndex === index ? img : item)));
+      }
     }
   };
 
-  const removeImage = (img) => {
+  const addImage = async (files) => {
+    if (files.length > 0) {
+      const selectedImage = files[0];
+      const previewImage = URL.createObjectURL(selectedImage);
+      const previewIndex = imageShow.length;
+
+      setImageShow((prev) => [...prev, previewImage]);
+
+      try {
+        await dispatch(
+          product_image_update({
+            newImage: selectedImage,
+            productId,
+            addImage: true,
+          })
+        ).unwrap();
+      } catch (error) {
+        setImageShow((prev) => prev.filter((_, index) => index !== previewIndex));
+      }
+    }
+  };
+
+  const removeImage = (img, index) => {
     if ((imageShow || []).length <= 1) {
       toast.error('At least one product image is required');
       return;
     }
 
     setRemoveTargetImage(img);
+    setRemoveTargetIndex(index);
     setShowRemoveModal(true);
   };
 
@@ -102,6 +138,7 @@ const EditProduct = () => {
     dispatch(
       product_image_update({
         oldImage: removeTargetImage,
+        imageIndex: removeTargetIndex,
         productId,
         removeImage: true,
       })
@@ -109,11 +146,13 @@ const EditProduct = () => {
 
     setShowRemoveModal(false);
     setRemoveTargetImage('');
+    setRemoveTargetIndex(-1);
   };
 
   const cancelRemoveImage = () => {
     setShowRemoveModal(false);
     setRemoveTargetImage('');
+    setRemoveTargetIndex(-1);
   };
 
   useEffect(() => {
@@ -312,18 +351,27 @@ const EditProduct = () => {
                 imageShow.length > 0 &&
                 imageShow.map((img, i) => (
                   <div key={`${img}-${i}`} className="h-[180px] relative">
-                    <label htmlFor={`image-${i}`}>
+                    <button
+                      type="button"
+                      onClick={() => imageInputRefs.current[i]?.click()}
+                      className="w-full h-full cursor-pointer"
+                    >
                       <img className="w-full h-full rounded-sm" src={img} alt="" />
-                    </label>
+                    </button>
                     <input
-                      onChange={(e) => changeImage(img, e.target.files)}
+                      onChange={(e) => {
+                        changeImage(img, i, e.target.files);
+                        e.target.value = '';
+                      }}
                       type="file"
-                      id={`image-${i}`}
+                      ref={(el) => {
+                        imageInputRefs.current[i] = el;
+                      }}
                       className="hidden"
                     />
                     <button
                       type="button"
-                      onClick={() => removeImage(img)}
+                      onClick={() => removeImage(img, i)}
                       className="p-2 z-10 cursor-pointer bg-slate-700 hover:shadow-lg hover:shadow-slate-400/50 text-white absolute top-1 right-1 rounded-full"
                       aria-label="Remove product image"
                     >
@@ -331,6 +379,25 @@ const EditProduct = () => {
                     </button>
                   </div>
                 ))}
+
+              <label
+                className="flex justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed hover:border-red-500 w-full text-[#d0d2d6]"
+                htmlFor="image"
+              >
+                <span>
+                  <IoMdImages />
+                </span>
+                <span>Select Image </span>
+              </label>
+              <input
+                onChange={(e) => {
+                  addImage(e.target.files);
+                  e.target.value = '';
+                }}
+                type="file"
+                id="image"
+                className="hidden"
+              />
             </div>
 
             <div className="flex">

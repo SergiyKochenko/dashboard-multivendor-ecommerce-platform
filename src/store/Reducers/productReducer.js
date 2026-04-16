@@ -82,13 +82,22 @@ export const update_product = createAsyncThunk(
 
 export const product_image_update = createAsyncThunk(
   'product/product_image_update',
-  async ({ oldImage, newImage, productId, removeImage = false }, { rejectWithValue, fulfillWithValue }) => {
+  async (
+    { oldImage, newImage, productId, imageIndex, removeImage = false, addImage = false },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
     try {
       const formData = new FormData();
-      formData.append('oldImage', oldImage);
+      if (oldImage) {
+        formData.append('oldImage', oldImage);
+      }
       formData.append('productId', productId);
-      formData.append('removeImage', removeImage);
-      if (!removeImage && newImage) {
+      formData.append('removeImage', String(removeImage));
+      formData.append('addImage', String(addImage));
+      if (imageIndex !== undefined && imageIndex !== null) {
+        formData.append('imageIndex', imageIndex);
+      }
+      if (newImage) {
         formData.append('newImage', newImage);
       }
       const { data } = await api.post('/product-image-update', formData, { withCredentials: true });
