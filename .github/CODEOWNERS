@@ -1,0 +1,6 @@
+# Dashboard repository ownership rules
+* @SergiyKochenko
+/.github/ @SergiyKochenko
+/src/ @SergiyKochenko
+/public/ @SergiyKochenko
+/server.js @SergiyKochenko
