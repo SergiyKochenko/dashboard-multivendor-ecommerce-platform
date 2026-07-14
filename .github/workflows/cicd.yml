@@ -1,0 +1,60 @@
+name: CI-CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      render_deploy_hook_url:
+        description: "Optional Render deploy hook URL"
+        required: false
+        type: string
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      CI: true
+      APP_URL: https://dashboard-multivendor-ecommerce-platform.onrender.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test -- --watchAll=false --coverage
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-build
+          path: build/
+
+      - name: Trigger Render deploy (manual)
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.render_deploy_hook_url != ''
+        run: |
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL"
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ github.event.inputs.render_deploy_hook_url }}
+
+      - name: Verify deployment health
+        run: |
+          curl -fsS --retry 20 --retry-all-errors --retry-delay 10 "$APP_URL" > /dev/null
