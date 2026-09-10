@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import Search from '../components/Search';
 import { Link } from 'react-router-dom';
 import Pagination from '../Pagination';
@@ -37,6 +37,8 @@ const Products = () => {
     dispatch(delete_product(deleteId)).then((action) => {
       if (action.type.endsWith('fulfilled')) {
         toast.success('Product deleted successfully!');
+      } else {
+        toast.error(action.payload?.error || action.payload?.message || 'Failed to delete product');
       }
     });
     setShowConfirm(false);
